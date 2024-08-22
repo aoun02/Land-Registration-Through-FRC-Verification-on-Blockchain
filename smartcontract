@@ -1,0 +1,38 @@
+
+// it was written on remix ide and deployed on sepolia etherscan
+pragma solidity ^0.8.0;
+
+contract PDFHashVerifierMaps {
+    struct PDFHash {
+        bytes32 hashValue;
+        string fileName; // Optional: You can include filename for better verification
+    }
+
+    mapping(bytes32 => PDFHash) public pdfHashes;
+
+    event PDFHashAdded(bytes32 hashValue, string fileName);
+
+    // Function to add a PDF hash
+    function addPDFHash(bytes32 _hashValue, string memory _fileName) external {
+        require(pdfHashes[_hashValue].hashValue == bytes32(0), "Hash already exists");
+        
+        pdfHashes[_hashValue] = PDFHash(_hashValue, _fileName);
+        emit PDFHashAdded(_hashValue, _fileName);
+    }
+
+      function addPDFHashes(bytes32[] memory _hashValues, string[] memory _fileNames) external {
+        require(_hashValues.length == _fileNames.length, "Array lengths must match");
+
+        for (uint256 i = 0; i < _hashValues.length; i++) {
+            require(pdfHashes[_hashValues[i]].hashValue == bytes32(0), "Hash already exists");
+            pdfHashes[_hashValues[i]] = PDFHash(_hashValues[i], _fileNames[i]);
+            emit PDFHashAdded(_hashValues[i], _fileNames[i]);
+        }
+    }
+
+
+    // Function to verify if a given hash exists in the stored hashes
+    function verifyPDFHash(bytes32 _hashToVerify) public view returns (bool) {
+        return pdfHashes[_hashToVerify].hashValue != bytes32(0);
+    }
+}

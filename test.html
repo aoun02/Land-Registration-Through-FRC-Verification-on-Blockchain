@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test OTP</title>
+    <script src="https://smtpjs.com/v3/smtp.js"></script>
+</head>
+<body>
+
+    <input type="email" id="email" placeholder="Enter Email...">
+    <button onclick="sendTestEmail()">Send Test Email</button>
+
+    <script>
+        function sendTestEmail() {
+            const email = document.getElementById('email').value.trim();
+
+            if (email === '') {
+                alert('Please enter an email.');
+                return;
+            }
+
+            Email.send({
+                SecureToken: "9100139c-459c-4c56-8f97-db6adcc797f0",
+                To: email,
+                From: "sheikhhannan310@gmail.com",
+                Subject: "Test Email from SMTP.js",
+                Body: "This is a test email to check SMTP.js functionality."
+            }).then(message => {
+                console.log('SMTP response:', message);
+                if (message === "OK") {
+                    alert("Test email sent to " + email);
+                } else {
+                    alert("Failed to send test email: " + message);
+                }
+            }).catch(error => {
+                console.error("Error sending test email:", error);
+                alert("Error sending test email. Please try again later.");
+            });
+        }
+    </script>
+
+</body>
+</html>

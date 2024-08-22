@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Seller Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />
+    <link href="css/styles.css" rel="stylesheet" />
+    <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
+    <style>
+        #layoutSidenav_content {
+            position: relative;
+            padding-bottom: 4rem; /* Ensure pagination is not overlapped by the footer */
+        }
+
+        /* Position the pagination container at the bottom right */
+        .pagination-container {
+            position: absolute;
+            bottom: 3rem; /* Distance from the bottom of the parent container */
+            right: 1rem;
+            text-align: center;
+            margin: 0;
+            z-index: 10; /* Ensure it appears above the footer */
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            z-index: 1; /* Footer has lower z-index than pagination */
+        }
+
+        /* Position the copyright text on the left */
+        .footer-left {
+            flex: 1;
+            text-align: left;
+            padding-left: 1rem; /* Space from the left edge */
+        }
+
+        /* Style for the tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table th, table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        table th {
+            background-color: #f8f9fa;
+        }
+
+        table tbody tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
+</head>
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <button type="button" class="btn btn-secondary" onclick="goBack()">Previous to portal</button>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="index.html">Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        <div class="sb-sidenav-menu-heading">Core</div>
+                        <a class="nav-link" href="seller.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Dashboard
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Interface</div>
+                        <a class="nav-link" href="sellerform.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Add Land
+                        </a>
+                        <a class="nav-link" href="landgallery.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                            Land Gallery
+                        </a>
+                        <div class="sb-sidenav-menu-heading">Addons</div>
+                        <a class="nav-link" href="landrequest.html">
+                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
+                            Land Requests
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    <h1 class="mt-4">Dashboard</h1>
+                    <ol class="breadcrumb mb-4">
+                        <li class="breadcrumb-item active">Dashboard</li>
+                    </ol>
+                    <div class="row">
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-primary text-white mb-4">
+                                <div class="card-body">Total Buyers </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="#" id="viewTotalBuyers">View Details</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-3 col-md-6">
+                            <div class="card bg-success text-white mb-4">
+                                <div class="card-body">Registered Land Counts</div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="#" id="viewRegisteredLand">View Details</a>
+                                    <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="registeredLandCard" style="display: none;">
+                        <div class="card mb-4">
+                            <table id="datatablesSimple">
+                                <thead>
+                                    <tr>
+                                        <th>Property Number</th>
+                                        <th>Area in Sqm</th>
+                                        <th>City</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div id="totalBuyersCard" style="display: none;">
+                        <div class="card mb-4">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Age</th>
+                                        <th>City</th>
+                                        <th>Wallet Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            <div class="pagination-container">
+                <!-- Pagination buttons will be inserted here -->
+            </div>
+        </div>
+    </div>
+    <script>
+       document.getElementById("viewTotalBuyers").addEventListener("click", function() {
+    fetch('/landrequest')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("Data received from API:", data); // Check data format
+            const buyersTableBody = document.querySelector("#totalBuyersCard tbody");
+            buyersTableBody.innerHTML = ""; // Clear existing rows
+
+            if (Array.isArray(data)) { // Ensure data is an array
+                data.forEach(buyer => {
+                    const row = document.createElement("tr");
+
+                    // Create and append each cell
+                    const nameCell = document.createElement("td");
+                    nameCell.textContent = buyer.name || 'N/A'; // Handle possible undefined values
+                    row.appendChild(nameCell);
+
+                    const ageCell = document.createElement("td");
+                    ageCell.textContent = buyer.age || 'N/A'; // Handle possible undefined values
+                    row.appendChild(ageCell);
+
+                    const cityCell = document.createElement("td");
+                    cityCell.textContent = buyer.buyers_city || 'N/A'; // Handle possible undefined values
+                    row.appendChild(cityCell);
+
+                    const walletCell = document.createElement("td");
+                    walletCell.textContent = buyer.wallet_address || 'N/A'; // Handle possible undefined values
+                    row.appendChild(walletCell);
+
+                    buyersTableBody.appendChild(row);
+                });
+            } else {
+                console.error("Expected data to be an array, but got:", data);
+            }
+
+            document.getElementById("totalBuyersCard").style.display = "block";
+        })
+        .catch(error => console.error("Error fetching buyers data:", error));
+});
+
+    </script>
+    <script src="script.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="assets/demo/chart-area-demo.js"></script>
+    <script src="assets/demo/chart-bar-demo.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd
+    <script src="js/datatables-simple-demo.js"></script>
+</body>
+</html>

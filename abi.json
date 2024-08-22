@@ -1,0 +1,100 @@
+[
+    {
+        "anonymous": false,
+        "inputs": [
+            {
+                "indexed": false,
+                "internalType": "bytes32",
+                "name": "hashValue",
+                "type": "bytes32"
+            },
+            {
+                "indexed": false,
+                "internalType": "string",
+                "name": "fileName",
+                "type": "string"
+            }
+        ],
+        "name": "PDFHashAdded",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_hashValue",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "string",
+                "name": "_fileName",
+                "type": "string"
+            }
+        ],
+        "name": "addPDFHash",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32[]",
+                "name": "_hashValues",
+                "type": "bytes32[]"
+            },
+            {
+                "internalType": "string[]",
+                "name": "_fileNames",
+                "type": "string[]"
+            }
+        ],
+        "name": "addPDFHashes",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "",
+                "type": "bytes32"
+            }
+        ],
+        "name": "pdfHashes",
+        "outputs": [
+            {
+                "internalType": "bytes32",
+                "name": "hashValue",
+                "type": "bytes32"
+            },
+            {
+                "internalType": "string",
+                "name": "fileName",
+                "type": "string"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes32",
+                "name": "_hashToVerify",
+                "type": "bytes32"
+            }
+        ],
+        "name": "verifyPDFHash",
+        "outputs": [
+            {
+                "internalType": "bool",
+                "name": "",
+                "type": "bool"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
